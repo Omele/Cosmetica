@@ -1,6 +1,8 @@
-package com.boliviabytes.cosmetica;
+package com.boliviabytes.cosmetica.catalogo;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -14,6 +16,10 @@ import java.io.IOException;
 
 public class TaskRunner extends AsyncTask<String,String,String>{
     private int SOAP_ACTION_PREFIX=0,URL=1,METHOD=2,NAMESPACE=3;
+    private  Handler handler;
+    public TaskRunner(Handler handler){
+        this.handler=handler;
+    }
     @Override
     protected String doInBackground(String... params) {
         String resp=null;
@@ -27,7 +33,10 @@ public class TaskRunner extends AsyncTask<String,String,String>{
             try {
                 transport.call(params[NAMESPACE] + params[SOAP_ACTION_PREFIX] + params[METHOD], envelope);
             } catch (IOException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
+                System.out.println(e.getMessage());
+                System.out.println(e.getClass().toString());
+
             }
             //bodyIn is the body object received with this envelope
             if (envelope.bodyIn != null) {
@@ -36,7 +45,8 @@ public class TaskRunner extends AsyncTask<String,String,String>{
                 resp=resultSOAP.toString();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
+            System.out.println(e.getMessage());
             resp = e.getMessage();
         }
         return resp;
@@ -49,6 +59,7 @@ public class TaskRunner extends AsyncTask<String,String,String>{
 
     @Override
     protected void onProgressUpdate(String... values) {
-        System.out.println(values[0]);
+        handler.sendEmptyMessage(0);
+                System.out.println(values[0]);
     }
 }
