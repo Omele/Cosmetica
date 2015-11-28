@@ -23,5 +23,70 @@ public class WSClient {
         taskRunner.execute(SOAP_ACTION_PREFIX,URL,METHOD,NAMESPACE);
     }
 
+	/**
+	 * 
+	 * @param login
+	 * @param pass
+	 */
+	public void wsLogin(String login, String pass){
+
+	}
+
+	/**
+	 * 
+	 * @param categoria
+	 */
+	public void wsConsultarProductos(int categoria){
+
+	}
+
+	/**
+	 * 
+	 * @param producto
+	 */
+	public void wsEnviarPedido(ProductoPedido producto){
+
+	}
+
+	/**
+	 * 
+	 * @param nombre
+	 */
+	public void wsBuscarPromotor(String nombre){
+
+	}
+
+	/**
+	 * 
+	 * @param promotor
+	 */
+	public void wsConsultarPedido(String promotor){
+
+	}
+
+	/**
+	 * 
+	 * @param id
+	 */
+	public void wsEditarPedido(int id){
+
+	}
+
+	/**
+	 * 
+	 * @param id
+	 */
+	public void wsEliminarPedido(int id){
+
+	}
+
+	/**
+	 * 
+	 * @param promotor
+	 */
+	public void wsConsultarPedidos(String promotor){
+
+	}
+
 
 }

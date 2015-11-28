@@ -39,4 +39,17 @@ public class Sesion extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+	public void actualizarVista(){
+
+	}
+
+	/**
+	 * 
+	 * @param password
+	 * @param login
+	 */
+	public void login(String password, String login){
+
+	}
+
 }
