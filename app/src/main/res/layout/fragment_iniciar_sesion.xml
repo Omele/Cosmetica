@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="INICIAR SECION"
+        android:text="INICIAR SESION"
         android:id="@+id/textView8"
         android:layout_gravity="center_horizontal" />
 
@@ -25,24 +25,4 @@
         android:layout_gravity="center_horizontal" android:paddingLeft="15dip" android:paddingRight="15dip"
         android:onClick="enviar"/>
 
-    <TextView android:id="@+id/link_to_register"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
-        android:layout_marginBottom="40dip"
-        android:text="registrate!"
-        android:gravity="center"
-        android:textSize="20dip"
-        android:textColor="#0b84aa"
-        android:onClick="nuevo"
-        android:linksClickable="true"/>
-
-    <TextView android:id="@+id/login_error"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
-        android:layout_marginBottom="40dip"
-        android:gravity="center"
-        android:textSize="20dip"
-        android:textColor="#0b84aa"/>
 </LinearLayout>
