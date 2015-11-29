@@ -44,10 +44,13 @@ public class WSClient {
 	 * @param login
 	 * @param pass
 	 */
-	public void wsLogin(String login, String pass){
-
+	public TaskRunner wsLogin(Handler  handler, String login, String pass){
+		APICosmetica stackOverflowAPI = retrofit.create(APICosmetica.class);
+		Call<Integer> call = stackOverflowAPI.getValidarUsuario(login, pass);
+		TaskRunner  taskRunner=new TaskRunner(handler,call);
+		System.out.println(taskRunner.execute());
+		return taskRunner;
 	}
-
 	/**
 	 * 
 	 * @param categoria

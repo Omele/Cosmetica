@@ -1,15 +1,29 @@
 package com.boliviabytes.cosmetica.promotor;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.catalogo.OnFragmentInteractionListener;
+import com.boliviabytes.cosmetica.catalogo.TaskRunner;
+import com.boliviabytes.cosmetica.catalogo.WSClient;
+import com.boliviabytes.cosmetica.catalogo.WSHandler;
+import com.boliviabytes.cosmetica.model.Categoria;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +43,10 @@ public class Sesion extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private  TaskRunner taskRunner;
     private OnFragmentInteractionListener mListener;
+    private Button  btnLogin;
+    private TextView login, password;
 
     /**
      * Use this factory method to create a new instance of
@@ -60,13 +77,54 @@ public class Sesion extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        //taskRunner=WSClient.getInstance().wsLogin(wsHandler,"ygr","ygr");
+        //Toast.makeText(getContext(), "Este es ", Toast.LENGTH_SHORT).show();
+
     }
 
+    WSHandler wsHandler=new WSHandler(){
+        @Override
+        public void dispatchMessage(Message msg) {
+            actualizarVista();
+        }
+    };
+    public void actualizarVista(){
+
+        try {
+            Integer validar= (Integer) taskRunner.get();
+            if(validar==0)
+                Toast.makeText(getContext(), "Usuario incorecto", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getContext(), "Usuario valido", Toast.LENGTH_SHORT).show();
+
+        } catch (InterruptedException e) {
+            // e.printStackTrace();
+        } catch (ExecutionException e) {
+            // e.printStackTrace();
+        }
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_iniciar_sesion, container, false);
+        View view=inflater.inflate(R.layout.fragment_iniciar_sesion, container, false);
+        btnLogin=(Button)view.findViewById(R.id.btnLogin);
+        login=(TextView) view.findViewById(R.id.txtLogin);
+        password=(TextView) view.findViewById(R.id.txtPassword);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.e("","enviando los adtos");
+
+                taskRunner=WSClient.getInstance().wsLogin(wsHandler,login.getText().toString(),password.getText().toString());
+
+            }
+        });
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,11 +154,6 @@ public class Sesion extends Fragment {
     public void addOnFragmentInteractionListener(OnFragmentInteractionListener mListener){
         this.mListener=mListener;
     }
-
-    public void actualizarVista(){
-
-    }
-
     /**
      *
      * @param password
