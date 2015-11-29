@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
  * Use the {@link VistaInicio#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VistaInicio extends Fragment   {
+public class VistaInicio extends Fragment implements AdapterView.OnItemSelectedListener   {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -86,17 +86,7 @@ public class VistaInicio extends Fragment   {
             Spinner sCategoria = (Spinner) getView().findViewById(R.id.sCategoria);
             sCategoria.setAdapter(new CategoriaAdapter(getContext(), R.layout.custom_spinner, R.id.tvNombreCategoria, categorias));
 
-            sCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
+            sCategoria.setOnItemSelectedListener(this);
         } catch (InterruptedException e) {
            // e.printStackTrace();
         } catch (ExecutionException e) {
@@ -135,7 +125,15 @@ public class VistaInicio extends Fragment   {
         mListener = null;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
 
     public class CategoriaAdapter extends ArrayAdapter<Categoria> {
