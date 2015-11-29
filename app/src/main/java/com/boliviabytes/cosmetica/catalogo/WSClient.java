@@ -30,13 +30,12 @@ public class WSClient {
 				.addConverterFactory(GsonConverterFactory.create())
 				.build();
     }
-    public void Hello(Handler handler){
+    public TaskRunner Hello(Handler handler){
 		APICosmetica stackOverflowAPI = retrofit.create(APICosmetica.class);
 		Call<List<Categoria>> call = stackOverflowAPI.getCategoria();
 		TaskRunner  taskRunner=new TaskRunner(handler,call);
 		System.out.println(taskRunner.execute());
-
-
+		return taskRunner;
 	}
 
 

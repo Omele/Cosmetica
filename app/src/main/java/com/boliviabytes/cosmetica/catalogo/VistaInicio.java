@@ -4,23 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.model.Categoria;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link VistaInicio.OnFragmentInteractionListener} interface
+ * {} interface
  * to handle interaction events.
  * Use the {@link VistaInicio#newInstance} factory method to
  * create an instance of this fragment.
@@ -35,6 +36,7 @@ public class VistaInicio extends Fragment {
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
+    private  TaskRunner taskRunner;
 
     /**
      * Use this factory method to create a new instance of
@@ -67,8 +69,28 @@ public class VistaInicio extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
 
+       taskRunner=WSClient.getInstance().Hello(wsHandler);
+    }
+    WSHandler wsHandler=new WSHandler(){
+        @Override
+        public void dispatchMessage(Message msg) {
+            actualizarVista();
+        }
+    };
+    public void actualizarVista(){
+
+        try {
+            List<Categoria>  categorias= (List<Categoria>) taskRunner.get();
+            Spinner sCategoria = (Spinner) getView().findViewById(R.id.sCategoria);
+            sCategoria.setAdapter(new CategoriaAdapter(getContext(),R.layout.custom_spinner,R.id.tvNombreCategoria, categorias));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,6 +128,8 @@ public class VistaInicio extends Fragment {
         public CategoriaAdapter(Context context, int resource, int textViewResourceId, List<Categoria> objects) {
             super(context, resource, textViewResourceId, objects);
         }
+
+
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {

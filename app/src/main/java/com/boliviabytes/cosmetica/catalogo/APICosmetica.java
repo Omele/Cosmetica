@@ -12,6 +12,6 @@ import retrofit.http.GET;
  * Created by HPIPP on 11/28/2015.
  */
 public interface APICosmetica {
-    @GET("/CosmeticaServicio/servicio/categoria/")
+    @GET("/CosmeticaServicio/servicio/categoria/0/2")
     Call<List<Categoria>> getCategoria();
 }

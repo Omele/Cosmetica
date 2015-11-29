@@ -2,7 +2,7 @@ package com.boliviabytes.cosmetica.catalogo;
 
 import android.os.AsyncTask;
 import android.os.Handler;
-
+import android.os.Message;
 
 
 import java.io.IOException;
@@ -32,11 +32,12 @@ public class TaskRunner extends AsyncTask<String,String,Object>{
     @Override
     protected void onPostExecute(Object o) {
         System.out.println(o);
+        handler.dispatchMessage(new Message());
     }
 
     @Override
     protected void onProgressUpdate(String... values) {
-        handler.sendEmptyMessage(0);
+
         System.out.println(values[0]);
     }
 
