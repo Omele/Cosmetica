@@ -3,7 +3,7 @@ package com.boliviabytes.cosmetica.catalogo;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,7 @@ import com.boliviabytes.cosmetica.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link VistaCarrito.OnFragmentInteractionListener} interface
+ * {} interface
  * to handle interaction events.
  * Use the {@link VistaCarrito#newInstance} factory method to
  * create an instance of this fragment.
@@ -126,9 +126,8 @@ public class VistaCarrito extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    public void addOnFragmentInteractionListener(OnFragmentInteractionListener mListener){
+        this.mListener=mListener;
     }
 
 }

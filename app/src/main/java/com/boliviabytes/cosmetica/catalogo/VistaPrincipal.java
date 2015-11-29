@@ -41,14 +41,8 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
         // Preparar las pestañas
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(mViewPager);
-       WSClient.getInstance().Hello(handler);
     }
-    Handler  handler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            Toast.makeText(getBaseContext(),"MSG:"+msg.what,Toast.LENGTH_LONG).show();
-        }
-    };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,10 +97,16 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
         VistaInicio vistaInicio=VistaInicio.newInstance("F","A");
+
         vistaInicio.addOnFragmentInteractionListener(this);
         adapter.addFragment(vistaInicio, "Home");
-       //adapter.addFragment(GridFragment.newInstance(2), "Cabello");
-        //adapter.addFragment(GridFragment.newInstance(3), "Cuerpo");
+        VistaCatalogo vistaCatalogo =VistaCatalogo.newInstance("A","N");
+        vistaCatalogo.addOnFragmentInteractionListener(this);
+        adapter.addFragment(vistaCatalogo, "Catalogo");
+
+        VistaCarrito vistaCarrito=VistaCarrito.newInstance("A","A");
+        vistaCarrito.addOnFragmentInteractionListener(this);
+        adapter.addFragment(vistaCarrito, "Carrito");
         viewPager.setAdapter(adapter);
     }
 

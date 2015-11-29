@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import java.util.concurrent.ExecutionException;
  * Use the {@link VistaInicio#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VistaInicio extends Fragment {
+public class VistaInicio extends Fragment   {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -83,11 +84,23 @@ public class VistaInicio extends Fragment {
         try {
             List<Categoria>  categorias= (List<Categoria>) taskRunner.get();
             Spinner sCategoria = (Spinner) getView().findViewById(R.id.sCategoria);
-            sCategoria.setAdapter(new CategoriaAdapter(getContext(),R.layout.custom_spinner,R.id.tvNombreCategoria, categorias));
+            sCategoria.setAdapter(new CategoriaAdapter(getContext(), R.layout.custom_spinner, R.id.tvNombreCategoria, categorias));
+
+            sCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         } catch (InterruptedException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         } catch (ExecutionException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
 
     }
@@ -121,6 +134,8 @@ public class VistaInicio extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
 
     public class CategoriaAdapter extends ArrayAdapter<Categoria> {
