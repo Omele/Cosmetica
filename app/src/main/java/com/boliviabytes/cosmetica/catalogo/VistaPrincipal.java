@@ -107,7 +107,9 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
         VistaCarrito vistaCarrito=VistaCarrito.newInstance("A","A");
         vistaCarrito.addOnFragmentInteractionListener(this);
         adapter.addFragment(vistaCarrito, "Carrito");
+        viewPager.setCurrentItem(2);
         viewPager.setAdapter(adapter);
+        ;
     }
 
     /**
