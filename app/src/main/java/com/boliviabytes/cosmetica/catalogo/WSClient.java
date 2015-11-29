@@ -1,27 +1,44 @@
 package com.boliviabytes.cosmetica.catalogo;
 
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 
+import com.boliviabytes.cosmetica.model.Categoria;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import retrofit.Call;
+import retrofit.Retrofit;
+import retrofit.GsonConverterFactory;
 /**
  * Created by HPIPP on 11/23/2015.
  */
 public class WSClient {
     private static WSClient ourInstance = new WSClient();
-    public final static String URL = "http://192.168.1.23:8080/WebApp1/SampleWebService?WSDL";
-    public static final String NAMESPACE = "http://cos/";
-    public static final String SOAP_ACTION_PREFIX = "/";
+    public final static String BASE_URL = "http://192.168.1.101:8080";
     public static WSClient getInstance() {
         return ourInstance;
     }
-
+	private Retrofit retrofit;
     private WSClient() {
-
+		retrofit= new Retrofit.Builder()
+				.baseUrl(BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
     }
     public void Hello(Handler handler){
-        String METHOD = "hello";
-        TaskRunner taskRunner=new TaskRunner(handler);
-        taskRunner.execute(SOAP_ACTION_PREFIX,URL,METHOD,NAMESPACE);
-    }
+		APICosmetica stackOverflowAPI = retrofit.create(APICosmetica.class);
+		Call<List<Categoria>> call = stackOverflowAPI.getCategoria();
+		TaskRunner  taskRunner=new TaskRunner(handler,call);
+		System.out.println(taskRunner.execute());
+
+
+	}
+
 
 	/**
 	 * 

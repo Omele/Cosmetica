@@ -1,5 +1,6 @@
 package com.boliviabytes.cosmetica.catalogo;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,7 +24,7 @@ import com.boliviabytes.cosmetica.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VistaPrincipal extends AppCompatActivity {
+public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInteractionListener{
     ViewPager mViewPager;
 
     @Override
@@ -31,7 +32,7 @@ public class VistaPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setToolbar(); // Añadir la toolbar
+       setToolbar(); // Añadir la toolbar
 
         // Setear adaptador al viewpager.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -40,15 +41,14 @@ public class VistaPrincipal extends AppCompatActivity {
         // Preparar las pestañas
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(mViewPager);
-       //WSClient.getInstance().Hello(handler);
-
+       WSClient.getInstance().Hello(handler);
     }
-    /*Handler  handler=new Handler(){
+    Handler  handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             Toast.makeText(getBaseContext(),"MSG:"+msg.what,Toast.LENGTH_LONG).show();
         }
-    };*/
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,9 +102,11 @@ public class VistaPrincipal extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(GridFragment.newInstance(1), "Home");
-        adapter.addFragment(GridFragment.newInstance(2), "Cabello");
-        adapter.addFragment(GridFragment.newInstance(3), "Cuerpo");
+        VistaInicio vistaInicio=VistaInicio.newInstance("F","A");
+        vistaInicio.addOnFragmentInteractionListener(this);
+        adapter.addFragment(vistaInicio, "Home");
+       //adapter.addFragment(GridFragment.newInstance(2), "Cabello");
+        //adapter.addFragment(GridFragment.newInstance(3), "Cuerpo");
         viewPager.setAdapter(adapter);
     }
 
@@ -115,6 +117,11 @@ public class VistaPrincipal extends AppCompatActivity {
      */
     public void onFabClick(View v) {
         showSnackBar("Buscar producto");
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     /**
