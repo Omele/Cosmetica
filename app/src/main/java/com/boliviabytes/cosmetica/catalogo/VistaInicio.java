@@ -88,9 +88,9 @@ public class VistaInicio extends Fragment implements AdapterView.OnItemSelectedL
 
             sCategoria.setOnItemSelectedListener(this);
         } catch (InterruptedException e) {
-           // e.printStackTrace();
+                    // e.printStackTrace();
         } catch (ExecutionException e) {
-           // e.printStackTrace();
+                     // e.printStackTrace();
         }
 
     }
