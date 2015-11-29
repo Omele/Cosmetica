@@ -2,8 +2,6 @@ package com.boliviabytes.cosmetica.catalogo;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,16 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.boliviabytes.cosmetica.GridFragment;
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.promotor.Sesion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInteractionListener{
+public class VistaCatalogoPrincipal extends AppCompatActivity implements  OnFragmentInteractionListener{
     ViewPager mViewPager;
 
     @Override
@@ -98,18 +94,15 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
      */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        Sesion sesion=Sesion.newInstance("F","A");
-
-        sesion.addOnFragmentInteractionListener(this);
-        adapter.addFragment(sesion, "Sesion");
-        VistaCatalogo vistaCatalogo =VistaCatalogo.newInstance();
-        vistaCatalogo.addOnFragmentInteractionListener(this);
-        adapter.addFragment(vistaCatalogo, "Catalogo");
-
-        VistaCarrito vistaCarrito=VistaCarrito.newInstance("A","A");
-        vistaCarrito.addOnFragmentInteractionListener(this);
-        adapter.addFragment(vistaCarrito, "Carrito");
-        viewPager.setCurrentItem(2);
+        VistaCatalogoProducto vcpCabello= VistaCatalogoProducto.newInstance("Cabello",0);
+        vcpCabello.addOnFragmentInteractionListener(this);
+        adapter.addFragment(vcpCabello  , "Cabello");
+        VistaCatalogoProducto vcpRostro= VistaCatalogoProducto.newInstance("Rostro",0);
+        vcpRostro.addOnFragmentInteractionListener(this);
+        adapter.addFragment(vcpRostro, "Rostro");
+        VistaCatalogoProducto vcpCuerpo= VistaCatalogoProducto.newInstance("Cuerpo",0);
+        vcpCuerpo.addOnFragmentInteractionListener(this);
+        adapter.addFragment(vcpCuerpo, "Cuerpo");
         viewPager.setAdapter(adapter);
 
     }

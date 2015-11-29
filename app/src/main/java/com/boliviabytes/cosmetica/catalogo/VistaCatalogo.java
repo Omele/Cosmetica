@@ -1,20 +1,26 @@
 package com.boliviabytes.cosmetica.catalogo;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
-import com.boliviabytes.cosmetica.Product;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.boliviabytes.cosmetica.R;
-import com.boliviabytes.cosmetica.model.Producto;
+import com.boliviabytes.cosmetica.model.Categoria;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,33 +30,21 @@ import java.util.List;
  * Use the {@link VistaCatalogo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VistaCatalogo extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private Bundle bundle;
-
+public class VistaCatalogo extends Fragment  implements  AdapterView.OnItemSelectedListener{
     private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment VistaCatalogo.
      */
     // TODO: Rename and change types and number of parameters
-    public static VistaCatalogo newInstance(String param1, String param2) {
+    private  TaskRunner taskRunner;
+    public static VistaCatalogo newInstance() {
         VistaCatalogo fragment = new VistaCatalogo();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,29 +60,14 @@ public class VistaCatalogo extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
+        taskRunner=WSClient.getInstance().Hello(wsHandler);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_vista_catalogo_filtro, container, false);
-        ListView lvProductos= (ListView) view.findViewById(R.id.lv_productos);
-        List<Producto> lProductos=new ArrayList<>();
-        Producto producto=new Producto();
-        producto.setNombre("hhhhhhhh");
-        producto.setDescripcion("sjdfsjdfjasdj fajdfjasdfkjsdkfjaksj dfskjd;fkajs;dfkja;sdfkjasf");
-        lProductos.add(producto);
-         producto=new Producto();
-        producto.setNombre("hhhhhhhh");
-        producto.setDescripcion("sjdfsjdfjasdj fajdfjasdfkjsdkfjaksj dfskjd;fkajs;dfkja;sdfkjasf");
-        lProductos.add(producto);
-
-        lvProductos.setAdapter(new AdapterCatalogo(getContext(),lProductos));
-
-        return view;
+        return inflater.inflate(R.layout.fragment_vista_catalogo, container, false);
 
     }
 
@@ -116,12 +95,26 @@ public class VistaCatalogo extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    public void setLayoutCatalogo(){
 
+    WSHandler wsHandler=new WSHandler(){
+        @Override
+        public void dispatchMessage(Message msg) {
+            actualizarVista();
+        }
+    };
+    public void actualizarVista(){
 
-    }
-    public void setLayoutCatalogoFiltro(){
+        try {
+            List<Categoria> categorias= (List<Categoria>) taskRunner.get();
+            Spinner sCategoria = (Spinner) getView().findViewById(R.id.sCategoria);
+            sCategoria.setAdapter(new CategoriaAdapter(getContext(), R.layout.custom_spinner, R.id.tvNombreCategoria, categorias));
 
+            sCategoria.setOnItemSelectedListener(this);
+        } catch (InterruptedException e) {
+            // e.printStackTrace();
+        } catch (ExecutionException e) {
+            // e.printStackTrace();
+        }
 
     }
 
@@ -135,9 +128,7 @@ public class VistaCatalogo extends Fragment {
 
 	}
 
-	public void actualizarVista(){
 
-	}
 
 	/**
 	 * 
@@ -147,4 +138,40 @@ public class VistaCatalogo extends Fragment {
 
 	}
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(getContext(),"thississisiisis",Toast.LENGTH_LONG).show();
+        Intent intent=new Intent(getContext(),VistaCatalogoPrincipal.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+    public class CategoriaAdapter extends ArrayAdapter<Categoria> {
+
+        public CategoriaAdapter(Context context, int resource, int textViewResourceId, List<Categoria> objects) {
+            super(context, resource, textViewResourceId, objects);
+        }
+
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return getCustomView(position,convertView,parent);
+        }
+        /**
+         * Obtiene un vista personalizada  en un View para elemento
+         */
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            View vSpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
+            TextView tvNombre = (TextView) vSpinner .findViewById(R.id.tvNombreCategoria);
+            tvNombre.setText(getItem(position).getNombre());
+            return vSpinner;
+        }
+
+
+    }
 }
