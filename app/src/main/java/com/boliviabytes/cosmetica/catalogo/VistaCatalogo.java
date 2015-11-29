@@ -7,8 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.boliviabytes.cosmetica.Product;
 import com.boliviabytes.cosmetica.R;
+import com.boliviabytes.cosmetica.model.Producto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +33,7 @@ public class VistaCatalogo extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Bundle bundle;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,13 +72,28 @@ public class VistaCatalogo extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vista_catalogo, container, false);
+        View view=inflater.inflate(R.layout.fragment_vista_catalogo_filtro, container, false);
+        ListView lvProductos= (ListView) view.findViewById(R.id.lv_productos);
+        List<Producto> lProductos=new ArrayList<>();
+        Producto producto=new Producto();
+        producto.setNombre("hhhhhhhh");
+        producto.setDescripcion("sjdfsjdfjasdj fajdfjasdfkjsdkfjaksj dfskjd;fkajs;dfkja;sdfkjasf");
+        lProductos.add(producto);
+         producto=new Producto();
+        producto.setNombre("hhhhhhhh");
+        producto.setDescripcion("sjdfsjdfjasdj fajdfjasdfkjsdkfjaksj dfskjd;fkajs;dfkja;sdfkjasf");
+        lProductos.add(producto);
+
+        lvProductos.setAdapter(new AdapterCatalogo(getContext(),lProductos));
+
+        return view;
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    // TODO: Rename method, update argument anlvd hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -94,8 +116,18 @@ public class VistaCatalogo extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    public void setLayoutCatalogo(){
 
-	/**
+
+    }
+    public void setLayoutCatalogoFiltro(){
+
+
+    }
+
+
+
+    /**
 	 * 
 	 * @param categoria
 	 */
@@ -114,6 +146,5 @@ public class VistaCatalogo extends Fragment {
 	public void visualizarProducto(int id){
 
 	}
-
 
 }

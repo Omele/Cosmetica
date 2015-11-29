@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.boliviabytes.cosmetica.GridFragment;
 import com.boliviabytes.cosmetica.R;
+import com.boliviabytes.cosmetica.promotor.Sesion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,10 +97,10 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
      */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        VistaInicio vistaInicio=VistaInicio.newInstance("F","A");
+        Sesion sesion=Sesion.newInstance("F","A");
 
-        vistaInicio.addOnFragmentInteractionListener(this);
-        adapter.addFragment(vistaInicio, "Home");
+        sesion.addOnFragmentInteractionListener(this);
+        adapter.addFragment(sesion, "Sesion");
         VistaCatalogo vistaCatalogo =VistaCatalogo.newInstance("A","N");
         vistaCatalogo.addOnFragmentInteractionListener(this);
         adapter.addFragment(vistaCatalogo, "Catalogo");
