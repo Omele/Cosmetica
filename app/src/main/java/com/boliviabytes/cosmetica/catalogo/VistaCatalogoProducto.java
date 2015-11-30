@@ -2,14 +2,19 @@ package com.boliviabytes.cosmetica.catalogo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.model.Producto;
@@ -32,6 +37,7 @@ public class VistaCatalogoProducto extends Fragment {
     private int tipo;
     public final static Integer CABELLO=0,ROSTRO=1,CUERPO=2;
     private OnFragmentInteractionListener mListener;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -62,6 +68,7 @@ public class VistaCatalogoProducto extends Fragment {
         if (getArguments() != null) {
           tipo= getArguments().getInt(TIPO);
         }
+
     }
 
     @Override
@@ -76,12 +83,79 @@ public class VistaCatalogoProducto extends Fragment {
         View view=inflater.inflate(R.layout.fragment_vista_catalogo_filtro, container, false);
         if(lProductos!=null){
             System.out.println(tipo+">"+lProductos.size());
-            ListView lvProductos= (ListView) view.findViewById(R.id.lv_productos);
+            final ListView lvProductos= (ListView) view.findViewById(R.id.lv_productos);
             lvProductos.setAdapter(new AdapterCatalogo(getContext(), lProductos));
+
+            lvProductos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                public boolean onItemLongClick(AdapterView<?> arg0, View v,
+                                               int index, long arg3) {
+                    // TODO Auto-generated method stub
+
+                   String str=index+"";
+
+                    mostrarDialogoSeleccion();
+                    //toast.show();
+                 //   Log.d("long click : " +str);
+
+                    return true;
+
+
+                }
+
+            });
+
         }
         return view;
     }
 
+    private void mostrarDialogoSeleccion()
+    {
+        final String[] items = {"Ver Producto",  "Añadir Pedido"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("");
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+              //  Log.i("Dialogos", "Opción elegida: " + items[item]);
+
+                if(items[item].toString().equals("Añadir Pedido"))
+                    mostrarDialogoConfirmacion();
+            }
+        });
+
+
+        builder.show();
+    }
+    private void mostrarDialogoConfirmacion()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        final EditText textoBusqueda = new EditText(getActivity());
+        builder.setTitle("Añadir cantidad");   // Título
+        builder.setView(textoBusqueda);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if(!textoBusqueda.getText().toString().matches("[0-9]*")){
+                    Toast toast = Toast.makeText(getContext(),"Esto no es un valor numerico", Toast.LENGTH_LONG);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getContext(),textoBusqueda.getText().toString(), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
+
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+               // Log.i("Dialogos", "Confirmacion Cancelada.");
+            }
+        });
+        builder.show();
+
+
+    }
     // TODO: Rename method, update argument anlvd hook method into UI event
 
     public void onButtonPressed(Uri uri) {
