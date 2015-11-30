@@ -21,6 +21,7 @@ public class Producto implements Serializable {
     private double costo;
     private double precio;
     private String foto;
+    private Integer tipo;
     private Categoria fkCategoriasID;
     private List<DetallePedido> detallePedidoList;
 
@@ -31,13 +32,16 @@ public class Producto implements Serializable {
         this.pkProductosID = pkProductosID;
     }
 
-    public Producto(Integer pkProductosID, String nombre, String descripcion, double costo, double precio, String foto) {
+    public Producto(Integer pkProductosID, String nombre, String descripcion, double costo, double precio, String foto, Integer tipo, Categoria fkCategoriasID, List<DetallePedido> detallePedidoList) {
         this.pkProductosID = pkProductosID;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.costo = costo;
         this.precio = precio;
         this.foto = foto;
+        this.tipo = tipo;
+        this.fkCategoriasID = fkCategoriasID;
+        this.detallePedidoList = detallePedidoList;
     }
 
     public Integer getPkProductosID() {
@@ -88,6 +92,14 @@ public class Producto implements Serializable {
         this.foto = foto;
     }
 
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
     public Categoria getFkCategoriasID() {
         return fkCategoriasID;
     }
@@ -125,7 +137,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
-    }
+        return "Producto{" + "pkProductosID=" + pkProductosID + ", nombre=" + nombre + ", descripcion=" + descripcion + ", costo=" + costo + ", precio=" + precio + ", foto=" + foto + ", tipo=" + tipo + ", fkCategoriasID=" + fkCategoriasID + ", detallePedidoList=" + detallePedidoList + '}';
+    }    
 
 }

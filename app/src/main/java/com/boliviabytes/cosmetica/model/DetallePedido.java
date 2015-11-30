@@ -17,8 +17,8 @@ public class DetallePedido implements Serializable {
     private Integer pkDetallePedidosID;
     private int cantidad;
     private double precio;
+    private Pedido fkPedidosID;
     private Producto fkProductosID;
-    private Promotor fkPedidosID;
 
     public DetallePedido() {
     }
@@ -57,20 +57,20 @@ public class DetallePedido implements Serializable {
         this.precio = precio;
     }
 
+    public Pedido getFkPedidosID() {
+        return fkPedidosID;
+    }
+
+    public void setFkPedidosID(Pedido fkPedidosID) {
+        this.fkPedidosID = fkPedidosID;
+    }
+
     public Producto getFkProductosID() {
         return fkProductosID;
     }
 
     public void setFkProductosID(Producto fkProductosID) {
         this.fkProductosID = fkProductosID;
-    }
-
-    public Promotor getFkPedidosID() {
-        return fkPedidosID;
-    }
-
-    public void setFkPedidosID(Promotor fkPedidosID) {
-        this.fkPedidosID = fkPedidosID;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class DetallePedido implements Serializable {
 
     @Override
     public String toString() {
-        return fkProductosID.getNombre();
+        return "com.boliviabyte.cosmetica.dato.DetallePedido[ pkDetallePedidosID=" + pkDetallePedidosID + " ]";
     }
 
 }

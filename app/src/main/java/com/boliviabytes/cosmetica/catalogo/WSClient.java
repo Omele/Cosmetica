@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.boliviabytes.cosmetica.model.Categoria;
+import com.boliviabytes.cosmetica.model.Producto;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +40,15 @@ public class WSClient {
 		return taskRunner;
 	}
 
+	public TaskRunner wsObtenerCategorias(Handler handler){
+		APICosmetica stackOverflowAPI = retrofit.create(APICosmetica.class);
+		Call<List<Categoria>> call = stackOverflowAPI.getCategoria();
+		TaskRunner  taskRunner=new TaskRunner(handler,call);
+		System.out.println(taskRunner.execute());
+		return taskRunner;
+	}
+
+
 
 	/**
 	 * 
@@ -55,9 +66,14 @@ public class WSClient {
 	 * 
 	 * @param categoria
 	 */
-	public void wsConsultarProductos(int categoria){
-
+	public TaskRunner wsConsultarProductos( WSHandler handler,int categoria){
+		APICosmetica stackOverflowAPI = retrofit.create(APICosmetica.class);
+		Call<List<Producto>> call = stackOverflowAPI.obtenerProductosPorpkCategoriasID(categoria);
+		TaskRunner  taskRunner=new TaskRunner(handler,call);
+		taskRunner.execute();
+		return taskRunner;
 	}
+
 
 	/**
 	 * 

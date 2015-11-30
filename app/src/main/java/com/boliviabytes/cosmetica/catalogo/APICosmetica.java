@@ -1,7 +1,7 @@
 package com.boliviabytes.cosmetica.catalogo;
 
 import com.boliviabytes.cosmetica.model.Categoria;
-
+import com.boliviabytes.cosmetica.model.Producto;
 import java.util.List;
 
 import retrofit.Call;
@@ -18,4 +18,8 @@ public interface APICosmetica {
 
     @GET("/CosmeticaServicio/servicio/promotor/validarLogin/{login}/{password}")
     Call<Integer> getValidarUsuario(@Path("login") String login, @Path("password") String password);
+
+    @GET("/CosmeticaServicio/servicio/producto/obtenerProductosPorpkCategoriasID/{pkCategoriasID}")
+    Call<List<Producto>> obtenerProductosPorpkCategoriasID(@Path("pkCategoriasID") int pkCategoriasID);
+
 }

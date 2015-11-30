@@ -1,8 +1,10 @@
 package com.boliviabytes.cosmetica.catalogo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,25 +27,24 @@ import java.util.List;
  */
 public class VistaCatalogoProducto extends Fragment {
 
-    public final static String TIPO_PRODUCCTO="TPRODUCTO",TITULO="TITULO";
-    private String titulo;
-    private int tipoProducto;
+    public final static String TIPO="TIPO";
+    private List<Producto> lProductos;
+    private int tipo;
+    public final static Integer CABELLO=0,ROSTRO=1,CUERPO=2;
     private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param titulo Parameter 1.
-     * @param tipoProducto Parameter 2.
+     * @param tipo Parameter 1.
      * @return A new instance of fragment VistaCatalogo.
      */
     // TODO: Rename and change types and number of parameters
-    public static VistaCatalogoProducto newInstance(String titulo, int tipoProducto) {
+    public static VistaCatalogoProducto newInstance(int tipo) {
         VistaCatalogoProducto fragment = new VistaCatalogoProducto();
         Bundle args = new Bundle();
-        args.putInt(TIPO_PRODUCCTO,tipoProducto);
-        args.putString(TITULO, titulo);
+        args.putInt(TIPO, tipo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,29 +60,26 @@ public class VistaCatalogoProducto extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
+          tipo= getArguments().getInt(TIPO);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        if (tipo==CABELLO){
+            lProductos=VistaCatalogoPrincipal.getlProductosCabello();
+        }else if(tipo==ROSTRO){
+            lProductos=VistaCatalogoPrincipal.getlProductosRostro();
+        }else if(tipo==CUERPO){
+            lProductos=VistaCatalogoPrincipal.getlProductosCuerpo();
+        }
         View view=inflater.inflate(R.layout.fragment_vista_catalogo_filtro, container, false);
-        ListView lvProductos= (ListView) view.findViewById(R.id.lv_productos);
-        List<Producto> lProductos=new ArrayList<>();
-        Producto producto=new Producto();
-        producto.setNombre("hhhhhhhh");
-        producto.setDescripcion("sjdfsjdfjasdj fajdfjasdfkjsdkfjaksj dfskjd;fkajs;dfkja;sdfkjasf");
-        lProductos.add(producto);
-         producto=new Producto();
-        producto.setNombre("hhhhhhhh");
-        producto.setDescripcion("sjdfsjdfjasdj fajdfjasdfkjsdkfjaksj dfskjd;fkajs;dfkja;sdfkjasf");
-        lProductos.add(producto);
-
-        lvProductos.setAdapter(new AdapterCatalogo(getContext(),lProductos));
-
+        if(lProductos!=null){
+            System.out.println(tipo+">"+lProductos.size());
+            ListView lvProductos= (ListView) view.findViewById(R.id.lv_productos);
+            lvProductos.setAdapter(new AdapterCatalogo(getContext(), lProductos));
+        }
         return view;
-
     }
 
     // TODO: Rename method, update argument anlvd hook method into UI event
@@ -124,10 +122,6 @@ public class VistaCatalogoProducto extends Fragment {
 	 * @param categoria
 	 */
 	public void consultarProductos(int categoria){
-
-	}
-
-	public void actualizarVista(){
 
 	}
 

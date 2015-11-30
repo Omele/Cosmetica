@@ -7,6 +7,7 @@ package com.boliviabytes.cosmetica.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -21,6 +22,7 @@ public class Pedido implements Serializable {
     private double total;
     private Date fecha;
     private Promotor fkPromotoresID;
+    private List<DetallePedido> detallePedidoList;
 
     public Pedido() {
     }
@@ -85,6 +87,14 @@ public class Pedido implements Serializable {
         this.fkPromotoresID = fkPromotoresID;
     }
 
+    public List<DetallePedido> getDetallePedidoList() {
+        return detallePedidoList;
+    }
+
+    public void setDetallePedidoList(List<DetallePedido> detallePedidoList) {
+        this.detallePedidoList = detallePedidoList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -106,7 +116,7 @@ public class Pedido implements Serializable {
 
     @Override
     public String toString() {
-        return cliente;
+        return "com.boliviabyte.cosmetica.dato.Pedido[ pkPedidosID=" + pkPedidosID + " ]";
     }
 
 }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.model.Categoria;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -71,7 +72,7 @@ public class VistaInicio extends Fragment implements AdapterView.OnItemSelectedL
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-       taskRunner=WSClient.getInstance().Hello(wsHandler);
+      // taskRunner=WSClient.getInstance().Hello(wsHandler);
     }
     WSHandler wsHandler=new WSHandler(){
         @Override

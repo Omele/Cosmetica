@@ -20,7 +20,6 @@ public class Promotor implements Serializable {
     private String login;
     private String password;
     private List<Pedido> pedidoList;
-    private List<DetallePedido> detallePedidoList;
 
     public Promotor() {
     }
@@ -76,14 +75,6 @@ public class Promotor implements Serializable {
         this.pedidoList = pedidoList;
     }
 
-    public List<DetallePedido> getDetallePedidoList() {
-        return detallePedidoList;
-    }
-
-    public void setDetallePedidoList(List<DetallePedido> detallePedidoList) {
-        this.detallePedidoList = detallePedidoList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -105,7 +96,7 @@ public class Promotor implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.boliviabyte.cosmetica.dato.Promotor[ pkPromotoresID=" + pkPromotoresID + " ]";
     }
 
 }

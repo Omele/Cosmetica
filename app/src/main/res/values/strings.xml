@@ -17,5 +17,8 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="belcorp_descripcion">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</string>
+    <string name="belcorp_descripcion">una corporación comprometida con la
+belleza y realización personal
+de la mujer
+Más de 900, 000 mujeres en 16 países confían en nosotros y tienen su propio negocio como Consultoras, lo que les ha permitido crecer a nivel personal y profesional</string>
 </resources>

@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.model.Categoria;
 
@@ -33,14 +32,11 @@ import java.util.concurrent.ExecutionException;
 public class VistaCatalogo extends Fragment  implements  AdapterView.OnItemSelectedListener{
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment VistaCatalogo.
-     */
-    // TODO: Rename and change types and number of parameters
+
     private  TaskRunner taskRunner;
+    private List<Categoria> categorias;
+    private Spinner sCategoria;
+    private boolean sAutoClick=true;
     public static VistaCatalogo newInstance() {
         VistaCatalogo fragment = new VistaCatalogo();
         Bundle args = new Bundle();
@@ -62,11 +58,12 @@ public class VistaCatalogo extends Fragment  implements  AdapterView.OnItemSelec
         if (getArguments() != null) {
 
         }
-        taskRunner=WSClient.getInstance().Hello(wsHandler);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        taskRunner=WSClient.getInstance().wsObtenerCategorias(wsHandler);
         return inflater.inflate(R.layout.fragment_vista_catalogo, container, false);
 
     }
@@ -105,11 +102,15 @@ public class VistaCatalogo extends Fragment  implements  AdapterView.OnItemSelec
     public void actualizarVista(){
 
         try {
-            List<Categoria> categorias= (List<Categoria>) taskRunner.get();
-            Spinner sCategoria = (Spinner) getView().findViewById(R.id.sCategoria);
-            sCategoria.setAdapter(new CategoriaAdapter(getContext(), R.layout.custom_spinner, R.id.tvNombreCategoria, categorias));
+            categorias= (List<Categoria>) taskRunner.get();
+            System.out.println(categorias);
 
-            sCategoria.setOnItemSelectedListener(this);
+            if (categorias!=null&&categorias.size()>0){
+                sCategoria = (Spinner) getView().findViewById(R.id.sCategoria);
+               sCategoria.setAdapter(new CategoriaAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, categorias));
+                sCategoria.setPrompt("Seleccione...");
+               sCategoria.setOnItemSelectedListener(this);
+           }
         } catch (InterruptedException e) {
             // e.printStackTrace();
         } catch (ExecutionException e) {
@@ -140,9 +141,10 @@ public class VistaCatalogo extends Fragment  implements  AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getContext(),"thississisiisis",Toast.LENGTH_LONG).show();
-        Intent intent=new Intent(getContext(),VistaCatalogoPrincipal.class);
-        startActivity(intent);
+        if(sAutoClick) { sAutoClick=false;return;}
+            Intent intent = new Intent(getContext(), VistaCatalogoPrincipal.class);
+            intent.putExtra(VistaCatalogoPrincipal.CATEGORIA_ID, categorias.get(position).getPkCategoriasID());
+            startActivity(intent);
     }
 
     @Override
@@ -151,8 +153,8 @@ public class VistaCatalogo extends Fragment  implements  AdapterView.OnItemSelec
     }
     public class CategoriaAdapter extends ArrayAdapter<Categoria> {
 
-        public CategoriaAdapter(Context context, int resource, int textViewResourceId, List<Categoria> objects) {
-            super(context, resource, textViewResourceId, objects);
+        public CategoriaAdapter(Context context, int resource, List<Categoria> objects) {
+            super(context, resource, objects);
         }
 
 
@@ -166,7 +168,7 @@ public class VistaCatalogo extends Fragment  implements  AdapterView.OnItemSelec
          */
         public View getCustomView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            View vSpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
+            View vSpinner = inflater.inflate(R.layout.custom_spinner, null, false);
             TextView tvNombre = (TextView) vSpinner .findViewById(R.id.tvNombreCategoria);
             tvNombre.setText(getItem(position).getNombre());
             return vSpinner;
