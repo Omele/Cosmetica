@@ -82,22 +82,12 @@ public class VistaCatalogoProducto extends Fragment {
         }
         View view=inflater.inflate(R.layout.fragment_vista_catalogo_filtro, container, false);
         if(lProductos!=null){
-            System.out.println(tipo+">"+lProductos.size());
             final ListView lvProductos= (ListView) view.findViewById(R.id.lv_productos);
             lvProductos.setAdapter(new AdapterCatalogo(getContext(), lProductos));
-
             lvProductos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-                public boolean onItemLongClick(AdapterView<?> arg0, View v,
-                                               int index, long arg3) {
-                    // TODO Auto-generated method stub
-
-                   String str=index+"";
-
-                    mostrarDialogoSeleccion();
-                    //toast.show();
-                 //   Log.d("long click : " +str);
-
+                public boolean onItemLongClick(AdapterView<?> arg0, View v,int index, long arg3) {
+                    mostrarDialogoSeleccion(index);
                     return true;
 
 
@@ -109,25 +99,21 @@ public class VistaCatalogoProducto extends Fragment {
         return view;
     }
 
-    private void mostrarDialogoSeleccion()
-    {
+    private void mostrarDialogoSeleccion(final int indice){
         final String[] items = {"Ver Producto",  "Añadir Pedido"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("");
-
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-              //  Log.i("Dialogos", "Opción elegida: " + items[item]);
-
                 if(items[item].toString().equals("Añadir Pedido"))
-                    mostrarDialogoConfirmacion();
+                    mostrarDialogoConfirmacion(indice);
             }
         });
 
 
         builder.show();
     }
-    private void mostrarDialogoConfirmacion()
+    private void mostrarDialogoConfirmacion(final int indice)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -136,12 +122,12 @@ public class VistaCatalogoProducto extends Fragment {
         builder.setView(textoBusqueda);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(!textoBusqueda.getText().toString().matches("[0-9]*")){
-                    Toast toast = Toast.makeText(getContext(),"Esto no es un valor numerico", Toast.LENGTH_LONG);
-                    toast.show();
+                if(textoBusqueda.getText().toString().matches("[0-9]*")){
+                    int cantidad=Integer.parseInt(textoBusqueda.getText().toString());
+                        Carrito.getInstance().anhadirProducto(lProductos.get(indice),cantidad);
+                        Toast.makeText(getContext(),"Agregado", Toast.LENGTH_LONG).show();
                 }else{
-                    Toast toast = Toast.makeText(getContext(),textoBusqueda.getText().toString(), Toast.LENGTH_LONG);
-                    toast.show();
+                    Toast.makeText(getContext(),"Esto no es un valor numerico", Toast.LENGTH_LONG).show();
                 }
 
 

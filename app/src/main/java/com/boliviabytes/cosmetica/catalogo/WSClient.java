@@ -22,10 +22,10 @@ import retrofit.GsonConverterFactory;
  */
 public class WSClient {
     private static WSClient ourInstance = new WSClient();
-    public final static String BASE_URL = "http://192.168.1.101:8080";
-    public static WSClient getInstance() {
-        return ourInstance;
-    }
+	public final static String BASE_URL = "http://192.168.1.101:8080";
+	public static WSClient getInstance() {
+		return ourInstance;
+	}
 	private Retrofit retrofit;
     private WSClient() {
 		retrofit= new Retrofit.Builder()
