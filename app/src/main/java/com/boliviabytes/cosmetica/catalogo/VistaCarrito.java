@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.boliviabytes.cosmetica.R;
 
@@ -29,6 +31,9 @@ public class VistaCarrito extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private String[] os = { "Android", "Windows Vista", "Windows 7",
+            "Windows 8", "Ubuntu 12.04", "Ubuntu 12.10", "Mac OSX", "iOS 5",
+            "iOS 6", "Solaris", "Kubuntu", "Suse" };
 
     /**
      * Use this factory method to create a new instance of
@@ -65,8 +70,22 @@ public class VistaCarrito extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vista_carrito, container, false);
+        View view=inflater.inflate(R.layout.fragment_vista_carrito, container, false);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, os);
+
+        AutoCompleteTextView textView = (AutoCompleteTextView) view.findViewById(R.id.txtBuscar);
+
+        // Numero de caracteres necesarios para que se empiece
+        // a mostrar la lista
+        textView.setThreshold(3);
+
+        // Se establece el Adapter
+        textView.setAdapter(adapter);
+
+        return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
