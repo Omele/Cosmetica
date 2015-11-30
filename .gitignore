@@ -44,3 +44,10 @@ captures/
 
 ### Android Patch ###
 gen-external-apklibs
+app/app.iml
+
+.idea/gradle.xml
+
+.idea/misc.xml
+
+app/app.iml
