@@ -51,14 +51,20 @@ public class AdapterCatalogo extends BaseAdapter {
         holder.lvNombre=(TextView) rowView.findViewById(R.id.tvNombrePro);
         holder.ivFoto=(ImageView) rowView.findViewById(R.id.ivFoto);
         holder.lvDescripcion= (TextView) rowView.findViewById(R.id.tvDescripcionPro);
-
+        holder.lvPrecio= (TextView) rowView.findViewById(R.id.tvPrecio);
         holder.lvNombre.setText(producto.getNombre());
         holder.lvDescripcion.setText(producto.getDescripcion());
+        holder.lvPrecio.setText("Precio "+producto.getPrecio());
+            try {
+                String imageDataBytes = producto.getFoto().substring(producto.getFoto().indexOf(",") + 1);
+                byte[] image = Base64.decode(imageDataBytes , Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+                holder.ivFoto.setImageBitmap(bitmap);
 
-        String imageDataBytes = producto.getFoto().substring(producto.getFoto().indexOf(",") + 1);
-        byte[] image = Base64.decode(imageDataBytes , Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-        holder.ivFoto.setImageBitmap(bitmap);
+            }catch (Exception e){
+
+            };
+
         return rowView;
     }
     public class Holder
@@ -66,5 +72,6 @@ public class AdapterCatalogo extends BaseAdapter {
         TextView lvNombre;
         TextView lvDescripcion;
         ImageView ivFoto;
+        TextView lvPrecio;
     }
 }

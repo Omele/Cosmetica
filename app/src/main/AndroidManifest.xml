@@ -21,6 +21,7 @@
         <activity android:name=".catalogo.VistaCatalogoPrincipal"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
+            android:largeHeap="true"
             >
 
 
