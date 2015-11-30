@@ -4,7 +4,62 @@
     tools:context="com.boliviabytes.cosmetica.catalogo.VistaProducto">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="vertical"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Nombre"
+            android:id="@+id/txtNombre"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+
+            android:textSize="40sp"/>
+
+        <ImageView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:id="@+id/imgProducto"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtNombre"
+
+            android:layout_marginTop="40dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/txtDescripcion" />
+
+        <TextView
+            android:layout_width="151dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/txtPrecio" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="229dp"
+            android:layout_height="wrap_content"
+            >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añadir a Pedido"
+            android:id="@+id/button"
+            android:onClick="Addcarrito"/>
+
+
+    </LinearLayout>
 
 </FrameLayout>
