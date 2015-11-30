@@ -5,6 +5,12 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="@string/hello_blank_fragment"
+        />
+    <AutoCompleteTextView
+        android:id="@+id/txtBuscar"
+        android:hint="buscar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
