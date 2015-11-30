@@ -37,7 +37,7 @@ public class VistaPedidos extends Fragment implements AdapterView.OnItemClickLis
     private static final String PROMOTOR = "PROMOTOR";
     private OnFragmentInteractionListener mListener;
     private TaskRunner taskRunner;
-    private String promotor;
+    private  Integer promotorId;
     private List<Pedido> lPedidos;
     public final static ArrayList<DetallePedido> lDetallePedido=new ArrayList<>();;
 
@@ -45,14 +45,14 @@ public class VistaPedidos extends Fragment implements AdapterView.OnItemClickLis
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param promotor Parameter 1.
+     * @param promotorId Parameter 1.
      * @return A new instance of fragment VistaPedidos.
      */
     // TODO: Rename and change types and number of parameters
-    public static VistaPedidos newInstance(String promotor) {
+    public static VistaPedidos newInstance(int promotorId) {
         VistaPedidos fragment = new VistaPedidos();
         Bundle args = new Bundle();
-        args.putString(PROMOTOR, promotor);
+        args.putInt(PROMOTOR, promotorId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,15 +65,15 @@ public class VistaPedidos extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            promotor = getArguments().getString(PROMOTOR);
+            promotorId = getArguments().getInt(PROMOTOR);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (promotor!=null&promotor!=""){
-            taskRunner= WSClient.getInstance().wsConsultarPedidos(wsHandler, 1);
+        if (promotorId!=null&promotorId>0){
+            taskRunner= WSClient.getInstance().wsConsultarPedidos(wsHandler, promotorId);
         }
         return inflater.inflate(R.layout.fragment_vista_pedidos, container, false);
     }

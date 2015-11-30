@@ -1,28 +1,26 @@
 package com.boliviabytes.cosmetica.promotor;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boliviabytes.cosmetica.R;
-import com.boliviabytes.cosmetica.catalogo.OnFragmentInteractionListener;
 import com.boliviabytes.cosmetica.catalogo.TaskRunner;
+import com.boliviabytes.cosmetica.catalogo.VistaPrincipal;
 import com.boliviabytes.cosmetica.catalogo.WSClient;
 import com.boliviabytes.cosmetica.catalogo.WSHandler;
-import com.boliviabytes.cosmetica.model.Categoria;
 
-import java.util.List;
+
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -34,34 +32,24 @@ import java.util.concurrent.ExecutionException;
  * create an instance of this fragment.
  */
 public class Sesion extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    public static final String PROMOTOR_ID = "PROMOTOR_ID";
     private  TaskRunner taskRunner;
-    private OnFragmentInteractionListener mListener;
     private Button  btnLogin;
     private TextView login, password;
+    private Integer promotorId;
+    private SharedPreferences preferencias;
+    private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Sesion.
      */
     // TODO: Rename and change types and number of parameters
-    public static Sesion newInstance(String param1, String param2) {
+    public static Sesion newInstance() {
         Sesion fragment = new Sesion();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,12 +62,13 @@ public class Sesion extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            //mParam1 = getArguments().getString(ARG_PARAM1);
+           // mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        //taskRunner=WSClient.getInstance().wsLogin(wsHandler,"ygr","ygr");
-        //Toast.makeText(getContext(), "Este es ", Toast.LENGTH_SHORT).show();
-
+        preferencias = getActivity().getSharedPreferences(VistaPrincipal.SHARE_SESION, Context.MODE_PRIVATE);
+    }
+    public void addOnFragmentInteractionListener( OnFragmentInteractionListener interactionListener){
+        this.mListener=interactionListener;
     }
 
     WSHandler wsHandler=new WSHandler(){
@@ -91,11 +80,17 @@ public class Sesion extends Fragment {
     public void actualizarVista(){
 
         try {
-            Integer validar= (Integer) taskRunner.get();
-            if(validar==0)
+                promotorId= (Integer) taskRunner.get();
+            if(promotorId!=null&&promotorId==0)
                 Toast.makeText(getContext(), "Usuario incorecto", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(getContext(), "Usuario valido", Toast.LENGTH_SHORT).show();
+            else if(promotorId!=null&&promotorId>0){
+                    SharedPreferences.Editor editor = preferencias.edit();
+                    editor.putInt(PROMOTOR_ID,promotorId);
+                    editor.commit();
+                    mListener.onFragmentInteraction(true);
+                    Toast.makeText(getContext(), "Usuario valido", Toast.LENGTH_SHORT).show();
+
+                }
 
         } catch (InterruptedException e) {
             // e.printStackTrace();
@@ -115,9 +110,6 @@ public class Sesion extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.e("","enviando los adtos");
-
                 taskRunner=WSClient.getInstance().wsLogin(wsHandler,login.getText().toString(),password.getText().toString());
 
             }
@@ -127,11 +119,8 @@ public class Sesion extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+
     }
 
     @Override
@@ -140,8 +129,7 @@ public class Sesion extends Fragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+
         }
     }
 
@@ -150,10 +138,11 @@ public class Sesion extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    public void addOnFragmentInteractionListener(OnFragmentInteractionListener mListener){
-        this.mListener=mListener;
+    public interface OnFragmentInteractionListener {
+        void  onFragmentInteraction(boolean show);
     }
+
+
     /**
      *
      * @param password

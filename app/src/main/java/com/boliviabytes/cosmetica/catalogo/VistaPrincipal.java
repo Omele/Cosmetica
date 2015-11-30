@@ -1,5 +1,7 @@
 package com.boliviabytes.cosmetica.catalogo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,12 +23,15 @@ import android.widget.Toast;
 import com.boliviabytes.cosmetica.GridFragment;
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.promotor.Sesion;
+import com.boliviabytes.cosmetica.promotor.VistaPedidos;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInteractionListener{
     ViewPager mViewPager;
+    public static final String SHARE_SESION="PREF_SESION";
+    private SharedPreferences preferencias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
         // Preparar las pestañas
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(mViewPager);
-
+        preferencias = getSharedPreferences(VistaPrincipal.SHARE_SESION, Context.MODE_PRIVATE);
     }
 
 
@@ -98,9 +103,8 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
      */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        Sesion sesion=Sesion.newInstance("F","A");
-
-        sesion.addOnFragmentInteractionListener(this);
+        Sesion sesion=Sesion.newInstance();
+        sesion.addOnFragmentInteractionListener(fragmentInteractionListener);
         adapter.addFragment(sesion, "Sesion");
         VistaCatalogo vistaCatalogo =VistaCatalogo.newInstance();
         vistaCatalogo.addOnFragmentInteractionListener(this);
@@ -111,6 +115,40 @@ public class VistaPrincipal extends AppCompatActivity implements  OnFragmentInte
         adapter.addFragment(vistaCarrito, "Carrito");
         viewPager.setCurrentItem(2);
         viewPager.setAdapter(adapter);
+
+    }
+    Sesion.OnFragmentInteractionListener fragmentInteractionListener =new Sesion.OnFragmentInteractionListener() {
+        @Override
+        public void onFragmentInteraction(boolean show) {
+            if (show){
+                agregarVistaPedido();
+            }
+        }
+    };
+    public void agregarVistaPedido(){
+        Integer promotorId=preferencias.getInt(Sesion.PROMOTOR_ID, -1);
+        if(promotorId>0){
+            SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            Sesion sesion=Sesion.newInstance();
+            sesion.addOnFragmentInteractionListener(fragmentInteractionListener);
+            adapter.addFragment(sesion, "Sesion");
+            VistaCatalogo vistaCatalogo =VistaCatalogo.newInstance();
+            vistaCatalogo.addOnFragmentInteractionListener(this);
+            adapter.addFragment(vistaCatalogo, "Catalogo");
+
+            VistaCarrito vistaCarrito=VistaCarrito.newInstance("A","A");
+            vistaCarrito.addOnFragmentInteractionListener(this);
+            adapter.addFragment(vistaCarrito, "Carrito");
+            VistaPedidos vistaPedidos=VistaPedidos.newInstance(promotorId);
+            vistaPedidos.addOnFragmentInteractionListener(this);
+            adapter.addFragment(vistaPedidos, "Pedidos");
+            mViewPager.setCurrentItem(2);
+            mViewPager.setAdapter(adapter);
+            // Preparar las pestañas
+            TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+            tabs.setupWithViewPager(mViewPager);
+        }
+
 
     }
 
