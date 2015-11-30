@@ -1,16 +1,18 @@
 package com.boliviabytes.cosmetica.catalogo;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.util.Base64;
 import com.boliviabytes.cosmetica.R;
 import com.boliviabytes.cosmetica.model.Producto;
-
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import java.util.List;
 
 /**
@@ -53,7 +55,10 @@ public class AdapterCatalogo extends BaseAdapter {
         holder.lvNombre.setText(producto.getNombre());
         holder.lvDescripcion.setText(producto.getDescripcion());
 
-        //holder.ivFoto.setImageResource(imageId[position]);
+        String imageDataBytes = producto.getFoto().substring(producto.getFoto().indexOf(",") + 1);
+        byte[] image = Base64.decode(imageDataBytes , Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+        holder.ivFoto.setImageBitmap(bitmap);
         return rowView;
     }
     public class Holder
