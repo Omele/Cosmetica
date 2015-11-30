@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.boliviabytes.cosmetica.model.Categoria;
+import com.boliviabytes.cosmetica.model.Pedido;
 import com.boliviabytes.cosmetica.model.Producto;
 
 
@@ -119,8 +120,12 @@ public class WSClient {
 	 * 
 	 * @param promotor
 	 */
-	public void wsConsultarPedidos(String promotor){
-
+	public TaskRunner wsConsultarPedidos(WSHandler handler,int promotorId){
+		APICosmetica stackOverflowAPI = retrofit.create(APICosmetica.class);
+		Call<List<Pedido>> call = stackOverflowAPI.obtenerPedidos(promotorId);
+		TaskRunner  taskRunner=new TaskRunner(handler,call);
+		taskRunner.execute();
+		return taskRunner;
 	}
 
 

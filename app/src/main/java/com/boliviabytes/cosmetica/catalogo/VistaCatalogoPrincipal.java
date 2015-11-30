@@ -86,18 +86,6 @@ public class VistaCatalogoPrincipal extends AppCompatActivity implements  OnFrag
                         }
                 }
 
-               /* FragmentPagerAdapter pagerAdapter= (FragmentPagerAdapter) mViewPager.getAdapter();
-                System.out.println(pagerAdapter.getPageTitle(2));
-                 ((VistaCatalogoProducto)pagerAdapter.getItem(2)).actualizarVista(lProductosCuerpo);
-
-               System.out.println(pagerAdapter.getPageTitle(1));
-
-                ((VistaCatalogoProducto)pagerAdapter.getItem(1)).actualizarVista(lProductosCabello);
-
-                System.out.println(pagerAdapter.getPageTitle(2));
-                ((VistaCatalogoProducto) pagerAdapter.getItem(2)).actualizarVista(lProductosRostro);*/
-
-
             }
         } catch (InterruptedException e) {
             // e.printStackTrace();

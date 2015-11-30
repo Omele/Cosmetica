@@ -1,6 +1,7 @@
 package com.boliviabytes.cosmetica.catalogo;
 
 import com.boliviabytes.cosmetica.model.Categoria;
+import com.boliviabytes.cosmetica.model.Pedido;
 import com.boliviabytes.cosmetica.model.Producto;
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface APICosmetica {
     @GET("/CosmeticaServicio/servicio/producto/obtenerProductosPorpkCategoriasID/{pkCategoriasID}")
     Call<List<Producto>> obtenerProductosPorpkCategoriasID(@Path("pkCategoriasID") int pkCategoriasID);
 
+    @GET("/CosmeticaServicio/servicio/pedido/obtenerClientesPorPromotor/{promotorID}")
+    Call<List<Pedido>> obtenerPedidos(@Path("promotorID") int promotorID);
 }

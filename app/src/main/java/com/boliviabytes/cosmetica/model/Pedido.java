@@ -116,7 +116,7 @@ public class Pedido implements Serializable {
 
     @Override
     public String toString() {
-        return "com.boliviabyte.cosmetica.dato.Pedido[ pkPedidosID=" + pkPedidosID + " ]";
+        return cliente;
     }
 
 }
